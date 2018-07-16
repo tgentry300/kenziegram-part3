@@ -5,5 +5,8 @@ block content
     form(method='post' action='/public/uploads' enctype='multipart/form-data')
         input(name='myFile' type='file')
         input(type='submit')  
-    each item in items
-        img(src= './uploads/' + item, height='100px')
+    if items.length
+        each item in items
+            img(src= './uploads/' + item, height='100px')
+    else 
+        h3 No Photos to Display
