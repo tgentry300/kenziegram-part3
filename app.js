@@ -12,7 +12,6 @@ const app = express();
 
 const photoObject = {
     photoArray: [],
-    savedPhotos: [],
 }
 
 app.set('view engine', 'pug')
@@ -35,27 +34,18 @@ app.post('/public/uploads', upload.single('myFile'), function (req, res, next) {
 app.get('/', (req, res) => {
 
 //read directory and check to see if photo already exists in array, if it does not exist, push it to array
-
     fs.readdir(uploadPath, (err, files) => {
         files.forEach(file => {
             if (!photoObject.photoArray.includes(file)){
             photoObject.photoArray.push(file)
             }
         })
-
-       
-       
-       
        
 //render index.pug file while also passing photoArray to pug
-       
         res.render('index', {
             items: photoObject.photoArray
         })
-
     })
-
-
 })
 
 app.listen(port)
