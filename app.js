@@ -19,15 +19,28 @@ app.set("views", path.join(__dirname, "views"));
 
 app.use(express.static(publicPath));
 app.use(express.json())
+
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+      cb(null, uploadPath)
+    },
+    filename: function (req, file, cb) {
+      cb(null, Date.now() + '-' + file.originalname)
+    }
+  })
+   
 const upload = multer({
-    dest: uploadPath
+    storage: storage
 });
 
 
 app.post('/public/uploads', upload.single('myFile'), function (req, res, next) {
-    res.render('uploads')
+    res.render('uploads', {
+        photo: req.file.filename
+    })
+    console.log(req.file.filename)
     if (!photoObject.photoArray.includes(req.file.filename)) {
-        photoObject.photoArray.push(req.file.filename)
+        photoObject.photoArray.unshift(req.file.filename)
     }
 })
 
@@ -60,16 +73,10 @@ app.get('/', (req, res) => {
 
     //read directory and check to see if photo already exists in array, if it does not exist, push it to array
     fs.readdir(uploadPath, (err, files) => {
-        if (files.length) {
-            files.forEach(file => {
-                if (!photoObject.photoArray.includes(file)) {
-                    photoObject.photoArray.push(file)
-                }
-            })
-        }
-        //render index.pug file while also passing photoArray to pug
+        
+        //render index.pug file while also passing files to pug
         res.render('index', {
-            items: photoObject.photoArray
+            items: files.reverse()
         })
     })
 })

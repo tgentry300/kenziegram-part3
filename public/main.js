@@ -19,7 +19,7 @@ function postToLatest() {
         data.images.forEach(photo => {
             img = document.createElement('img')
             img.src = './uploads/' + photo
-            img.style.height = '100px'
+            img.style.height = '250px'
             
             photosDiv.prepend(img)
         })
