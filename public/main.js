@@ -1,5 +1,4 @@
-//fetch request
-//send JSON.stringify 'after' timestamp time object
+let currentTime = Date.now()
 
 function postToLatest() {
     fetch('/latest', {
@@ -8,16 +7,28 @@ function postToLatest() {
             'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-            clientTimestamp: Date.now()
+            clientTimestamp: currentTime
         }),
     })
-    .then(res => {
-        res.json()
-    })
-    .catch(err => console.error(err))
+    .then(res => res.json())
+    // .catch(err => console.error(err))
     .then(data => {
-        console.log(data)
+        photosDiv = document.getElementById('photos')
+        data.images
+        
+        data.images.forEach(photo => {
+            img = document.createElement('img')
+            img.src = './uploads/' + photo
+            img.style.height = '100px'
+            
+            photosDiv.prepend(img)
+        })
+        
+        currentTime = data.timestamp
+        
     })
+
+    setTimeout(postToLatest, 2 * 1000)
 }
 
 postToLatest()
