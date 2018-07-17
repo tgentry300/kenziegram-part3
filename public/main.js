@@ -1,4 +1,5 @@
 let currentTime = Date.now()
+let errorCount = 0
 
 function postToLatest() {
     fetch('/latest', {
@@ -26,9 +27,20 @@ function postToLatest() {
         
         currentTime = data.timestamp
         
+        setTimeout(postToLatest, 5 * 1000)
+    })
+    .catch(err =>{
+        errorCount++
+        if(errorCount == 1){
+            setTimeout(postToLatest, 2000)
+        }
+        if(errorCount == 2){
+            photosDiv.innerHTML = 'Connection Lost'
+        }
+        
+        console.log(err)
     })
 
-    setTimeout(postToLatest, 2 * 1000)
 }
 
 postToLatest()

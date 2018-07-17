@@ -38,7 +38,6 @@ app.post('/public/uploads', upload.single('myFile'), function (req, res, next) {
     res.render('uploads', {
         photo: req.file.filename
     })
-    console.log(req.file.filename)
     if (!photoObject.photoArray.includes(req.file.filename)) {
         photoObject.photoArray.unshift(req.file.filename)
     }
