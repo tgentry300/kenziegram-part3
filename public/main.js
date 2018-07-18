@@ -35,8 +35,10 @@ function postToLatest() {
             setTimeout(postToLatest, 2000)
         }
         if(errorCount == 2){
-            photosDiv.innerHTML = 'Connection Lost'
+            photosDiv.innerHTML = 'Connection Lost'    
         }
+            
+        
         
         console.log(err)
     })
